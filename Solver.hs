@@ -3,7 +3,7 @@ import System.Random
 import Data.List.Split
 
 testList = [0,1..48]::[Int]
-sudokuBoard=[x*0|x<-[0,1..48]]
+
 
 randomNumber::IO Int
 randomNumber = getStdRandom (randomR (1,7))
@@ -97,25 +97,32 @@ checkCurRing board curIndex valueInserted
 
 
 
---src=https://gist.github.com/umairsd/cdcb397941762fe02d05#file-list-index-ops-hs-L17
+--source=https://gist.github.com/umairsd/cdcb397941762fe02d05#file-list-index-ops-hs-L17
 insertAt :: a -> [a] -> Int -> [a]
-insertAt x ys n = foldr insertHelper [] $ zip [0..] ys
+insertAt x list indexInsertingAt = foldr insertHelper [] $ zip [0..] list
 	where 
-		insertHelper (i,y) acc = if i == n
+		insertHelper (i,y) acc = if i == indexInsertingAt
 			then x : y : acc
 			else y : acc
 
 
+--source=https://gist.github.com/umairsd/cdcb397941762fe02d05#file-list-index-ops-hs-L17
+deleteAt :: [a] -> Int -> [a]
+deleteAt ys n = foldr deleteHelper [] $ zip [0..] ys
+	where
+		deleteHelper (i,y) acc = if i == n then acc else y : acc
 
 
 
 
 
+sudokuBoard=[x*1|x<-[0,1..48]]
 
 
 
-
-
+main = do
+	putStrLn (show sudokuBoard)
+	putStrLn (show (deleteAt sudokuBoard 3))
 
 
 
