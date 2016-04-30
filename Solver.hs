@@ -2,7 +2,7 @@ import Data.List
 import System.Random
 import Data.List.Split
 
-testList = [0,1..48]::[Int]
+testList = [1,2..49]::[Int]
 
 
 randomNumber::IO Int
@@ -39,7 +39,7 @@ checkArm arm index armIndex
 checkCurRing::[Int] -> Int -> Int -> Bool
 checkCurRing board curIndex valueInserted
 	| (curIndex<7 && curIndex>(-1)) =
-		((board!!0 /= valueInserted) 
+		((board!!0 /= valueInserted)
 		&& (board!!1 /= valueInserted)
 		&& (board!!2 /= valueInserted)
 		&& (board!!3 /= valueInserted)
@@ -70,7 +70,7 @@ checkCurRing board curIndex valueInserted
 		&& (board!!25 /= valueInserted)
 		&& (board!!26 /= valueInserted)
 		&& (board!!27 /= valueInserted))
-	| (curIndex<35 && curIndex>27) = 
+	| (curIndex<35 && curIndex>27) =
 		((board!!28 /= valueInserted)
 		&& (board!!29 /= valueInserted)
 		&& (board!!30 /= valueInserted)
@@ -100,7 +100,7 @@ checkCurRing board curIndex valueInserted
 --source=https://gist.github.com/umairsd/cdcb397941762fe02d05#file-list-index-ops-hs-L17
 insertAt :: a -> [a] -> Int -> [a]
 insertAt x list indexInsertingAt = foldr insertHelper [] $ zip [0..] list
-	where 
+	where
 		insertHelper (i,y) acc = if i == indexInsertingAt
 			then x : y : acc
 			else y : acc
@@ -112,9 +112,18 @@ deleteAt ys n = foldr deleteHelper [] $ zip [0..] ys
 	where
 		deleteHelper (i,y) acc = if i == n then acc else y : acc
 
+--This function will assist the getRingNumList function by checking if a given number is located in the ring.
+--If the number is not in the ring, it is appended to the list.
+getMissingRingNums::[Int]->[Int]->Int->Int->[Int]
+getMissingRingNums board valueList ringNumber numToCheck
+  | (checkCurRing board ringNumber numToCheck) == True = numToCheck:valueList
+  | otherwise = []
 
-
-
+--Function that will be called recursively in order to collect all of the numbers that may not be in a ring.
+getRingNumList::[Int]->[Int]->Int->Int->[Int]
+getRingNumList board valueList ringNumber numToCheck
+  | numToCheck < 8 = (getMissingRingNums board valueList ringNumber numToCheck) ++ (getRingNumList board valueList ringNumber (numToCheck+1))
+  | otherwise = []
 
 sudokuBoard=[x*1|x<-[0,1..48]]
 
@@ -123,43 +132,3 @@ sudokuBoard=[x*1|x<-[0,1..48]]
 main = do
 	putStrLn (show sudokuBoard)
 	putStrLn (show (deleteAt sudokuBoard 3))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
