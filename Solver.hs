@@ -4,6 +4,7 @@ import Data.List.Split
 
 testList = [1,2..49]::[Int]
 
+<<<<<<< HEAD
 clockwiseArmList = [[0,7,15,22,30,37,45],
                     [1,8,16,23,31,38,46],
                     [2,9,17,24,32,39,47],
@@ -20,6 +21,18 @@ cntrclockwiseArmList = [[0,13,20,26,33,39,46],
                         [5,11,18,24,31,37,44],
                         [6,12,19,25,32,38,45]]::[[Int]]
                         
+=======
+
+--returns a random number from inclusively from 1 to 7
+
+clockwiseArmList = [[]]
+
+--returns a random number from inclusively from 1 to 7
+randomNumber::IO Int
+randomNumber = getStdRandom (randomR (1,7))
+
+
+>>>>>>> 292d17031329698f870502c727498109a5966937
 testBoard::[Int] -> String
 testBoard list
   | length list == 0 = ""
@@ -36,6 +49,7 @@ determineClockwise boardIndex
   | (boardIndex == 6) || (boardIndex == 13) || (boardIndex == 14) || (boardIndex == 21) || (boardIndex == 29) || (boardIndex == 36) || (boardIndex == 44) = 6
 
 
+<<<<<<< HEAD
 determineCntClockwiseArm::Int -> Int
 determineCntClockwiseArm boardIndex
   | ((boardIndex ==0)|| (boardIndex==13)|| (boardIndex==20) || (boardIndex==26) || (boardIndex==33) || (boardIndex==39) || (boardIndex==46)) = 0
@@ -48,6 +62,8 @@ determineCntClockwiseArm boardIndex
 
 --checkClockwise::[Int]->[Int]->Int->Bool
 --checkClockwise
+=======
+>>>>>>> 292d17031329698f870502c727498109a5966937
 
 --getArm::[[Int]]->Int->[Int]
 --getArm indexBoard curIndex
@@ -60,6 +76,20 @@ checkArm arm index armIndex
 	| (arm!!armIndex) == index = True
 	| otherwise = checkArm arm index (armIndex+1)
 
+<<<<<<< HEAD
+=======
+--determines which counter clockwise arm an index on the lotus board falls into
+determineCntClockwiseArm::Int -> Int
+determineCntClockwiseArm boardIndex
+	| ((boardIndex ==0)|| (boardIndex==13)|| (boardIndex==20) || (boardIndex==26) || (boardIndex==33) || (boardIndex==39) || (boardIndex==46)) = 0
+	| ((boardIndex ==1)|| (boardIndex==7) || (boardIndex==14) || (boardIndex==27) || (boardIndex==34) || (boardIndex==40) || (boardIndex==47)) = 1
+	| ((boardIndex ==2)|| (boardIndex==8) || (boardIndex==15) || (boardIndex==21) || (boardIndex==28) || (boardIndex==41) || (boardIndex==48)) = 2
+	| ((boardIndex ==3)|| (boardIndex==9) || (boardIndex==16) || (boardIndex==22) || (boardIndex==29) || (boardIndex==35) || (boardIndex==42)) = 3
+	| ((boardIndex ==4)|| (boardIndex==10)|| (boardIndex==17) || (boardIndex==23) || (boardIndex==30) || (boardIndex==36) || (boardIndex==43)) = 4
+	| ((boardIndex ==5)|| (boardIndex==11)|| (boardIndex==18) || (boardIndex==24) || (boardIndex==31) || (boardIndex==37) || (boardIndex==44)) = 5
+	| ((boardIndex ==6)|| (boardIndex==12)|| (boardIndex==19) || (boardIndex==25) || (boardIndex==32) || (boardIndex==38) || (boardIndex==45)) = 6
+	| otherwise = -1
+>>>>>>> 292d17031329698f870502c727498109a5966937
 
 main = putStrLn (show $ determineCntClockwiseArm 467)
 
