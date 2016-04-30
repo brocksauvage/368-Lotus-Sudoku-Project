@@ -4,7 +4,7 @@ import Data.List.Split
 
 testList = [1,2..49]::[Int]
 
-
+--returns a random number from inclusively from 1 to 7
 randomNumber::IO Int
 randomNumber = getStdRandom (randomR (1,7))
 
@@ -27,14 +27,25 @@ testBoard list
 --getArm indexBoard curIndex
 
 
-
+--checks to see if a number can validly be placed on the arm 
 checkArm::[Int] -> Int -> Int -> Bool
 checkArm arm index armIndex
-  | armIndex > 6 = False
-  | (arm!!armIndex) == index = True
-  | otherwise = checkArm arm index (armIndex+1)
+	| armIndex > 6 = False
+	| (arm!!armIndex) == index = True
+	| otherwise = checkArm arm index (armIndex+1)
 
+determineCntClockwiseArm::Int -> Int
+determineCntClockwiseArm boardIndex
+	| ((boardIndex ==0)|| (boardIndex==13)|| (boardIndex==20) || (boardIndex==26) || (boardIndex==33) || (boardIndex==39) || (boardIndex==46)) = 0
+	| ((boardIndex ==1)|| (boardIndex==7) || (boardIndex==14) || (boardIndex==27) || (boardIndex==34) || (boardIndex==40) || (boardIndex==47)) = 1
+	| ((boardIndex ==2)|| (boardIndex==8) || (boardIndex==15) || (boardIndex==21) || (boardIndex==28) || (boardIndex==41) || (boardIndex==48)) = 2
+	| ((boardIndex ==3)|| (boardIndex==9) || (boardIndex==16) || (boardIndex==22) || (boardIndex==29) || (boardIndex==35) || (boardIndex==42)) = 3
+	| ((boardIndex ==4)|| (boardIndex==10)|| (boardIndex==17) || (boardIndex==23) || (boardIndex==30) || (boardIndex==36) || (boardIndex==43)) = 4
+	| ((boardIndex ==5)|| (boardIndex==11)|| (boardIndex==18) || (boardIndex==24) || (boardIndex==31) || (boardIndex==37) || (boardIndex==44)) = 5
+	| ((boardIndex ==6)|| (boardIndex==12)|| (boardIndex==19) || (boardIndex==25) || (boardIndex==32) || (boardIndex==38) || (boardIndex==45)) = 6
+	| otherwise = -1
 
+main = putStrLn (show $ determineCntClockwiseArm 467)
 
 checkCurRing::[Int] -> Int -> Int -> Bool
 checkCurRing board curIndex valueInserted
@@ -127,8 +138,3 @@ getRingNumList board valueList ringNumber numToCheck
 
 sudokuBoard=[x*1|x<-[0,1..48]]
 
-
-
-main = do
-	putStrLn (show sudokuBoard)
-	putStrLn (show (deleteAt sudokuBoard 3))
