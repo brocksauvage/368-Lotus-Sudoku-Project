@@ -4,12 +4,12 @@ import Data.List.Split
 
 testList = [1,2..49]::[Int]
 
-<<<<<<< HEAD
+
 --returns a random number from inclusively from 1 to 7
-=======
+
 clockwiseArmList = [[]]
 
->>>>>>> 894f36139299ef12abebe8828f8543d50c641785
+--returns a random number from inclusively from 1 to 7
 randomNumber::IO Int
 randomNumber = getStdRandom (randomR (1,7))
 
@@ -32,7 +32,7 @@ determineClockwise boardIndex
 --checkClockwise::[[Int]]->[Int]->Int->Bool
 --checkClockwise indexBoard board index
 
-<<<<<<< HEAD
+
 --getArm::[[Int]]->Int->[Int]
 --getArm indexBoard curIndex
 
@@ -44,6 +44,7 @@ checkArm arm index armIndex
 	| (arm!!armIndex) == index = True
 	| otherwise = checkArm arm index (armIndex+1)
 
+--determines which counter clockwise arm an index on the lotus board falls into
 determineCntClockwiseArm::Int -> Int
 determineCntClockwiseArm boardIndex
 	| ((boardIndex ==0)|| (boardIndex==13)|| (boardIndex==20) || (boardIndex==26) || (boardIndex==33) || (boardIndex==39) || (boardIndex==46)) = 0
@@ -56,15 +57,7 @@ determineCntClockwiseArm boardIndex
 	| otherwise = -1
 
 main = putStrLn (show $ determineCntClockwiseArm 467)
-=======
 
-checkArm::[Int] -> Int -> Int -> Bool
-checkArm arm index armIndex
-  | armIndex > 6 = False
-  | (arm!!armIndex) == index = True
-  | otherwise = checkArm arm index (armIndex+1)
-
->>>>>>> 894f36139299ef12abebe8828f8543d50c641785
 
 checkCurRing::[Int] -> Int -> Int -> Bool
 checkCurRing board curIndex valueInserted
