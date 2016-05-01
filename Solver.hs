@@ -4,6 +4,7 @@ import Data.List.Split
 
 testList = [1,2..49]::[Int]
 
+<<<<<<< HEAD
 --returns a random number from inclusively from 1 to 7
 
 clockwiseArmList = [[]]
@@ -12,6 +13,23 @@ clockwiseArmList = [[]]
 randomNumber::IO Int
 randomNumber = getStdRandom (randomR (1,7))
 
+=======
+clockwiseArmList = [[0,7,15,22,30,37,45],
+                    [1,8,16,23,31,38,46],
+                    [2,9,17,24,32,39,47],
+                    [3,10,18,25,33,40,48],
+                    [4,11,19,26,34,41,42],
+                    [5,12,20,27,28,35,43],
+                    [6,13,14,21,29,36,44]]::[[Int]]
+
+cntrclockwiseArmList = [[0,13,20,26,33,39,46],
+                        [1,7,14,27,34,40,47],
+                        [2,8,15,21,28,41,48],
+                        [3,9,16,22,29,35,42],
+                        [4,10,17,23,30,36,43],
+                        [5,11,18,24,31,37,44],
+                        [6,12,19,25,32,38,45]]::[[Int]]
+>>>>>>> 2169303cf156211a68e2e67022151040e4b0882f
 
 testBoard::[Int] -> String
 testBoard list
@@ -29,14 +47,8 @@ determineClockwise boardIndex
   | (boardIndex == 5) || (boardIndex == 12) || (boardIndex == 20) || (boardIndex == 27) || (boardIndex == 28) || (boardIndex == 35) || (boardIndex == 43) = 5
   | (boardIndex == 6) || (boardIndex == 13) || (boardIndex == 14) || (boardIndex == 21) || (boardIndex == 29) || (boardIndex == 36) || (boardIndex == 44) = 6
 
---checkClockwise::[[Int]]->[Int]->Int->Bool
---checkClockwise indexBoard board index
 
-
---getArm::[[Int]]->Int->[Int]
---getArm indexBoard curIndex
-
-
+<<<<<<< HEAD
 --checks to see if a number can validly be placed on the arm 
 checkArm::[Int] -> Int -> Int -> Bool
 checkArm arm index armIndex
@@ -49,16 +61,41 @@ determineCntClockwise::Int -> Int
 determineCntClockwise boardIndex
 	| ((boardIndex ==0)|| (boardIndex==13)|| (boardIndex==20) || (boardIndex==26) || (boardIndex==33) || (boardIndex==39) || (boardIndex==46)) = 0
 	| ((boardIndex ==1)|| (boardIndex==7) || (boardIndex==14) || (boardIndex==27) || (boardIndex==34) || (boardIndex==40) || (boardIndex==47)) = 1
+=======
+determineCntClockwiseArm::Int -> Int
+determineCntClockwiseArm boardIndex
+  | ((boardIndex ==0)|| (boardIndex==13)|| (boardIndex==20) || (boardIndex==26) || (boardIndex==33) || (boardIndex==39) || (boardIndex==46)) = 0
+  | ((boardIndex ==1)|| (boardIndex==7) || (boardIndex==14) || (boardIndex==27) || (boardIndex==34) || (boardIndex==40) || (boardIndex==47)) = 1
+>>>>>>> 2169303cf156211a68e2e67022151040e4b0882f
 	| ((boardIndex ==2)|| (boardIndex==8) || (boardIndex==15) || (boardIndex==21) || (boardIndex==28) || (boardIndex==41) || (boardIndex==48)) = 2
-	| ((boardIndex ==3)|| (boardIndex==9) || (boardIndex==16) || (boardIndex==22) || (boardIndex==29) || (boardIndex==35) || (boardIndex==42)) = 3
 	| ((boardIndex ==4)|| (boardIndex==10)|| (boardIndex==17) || (boardIndex==23) || (boardIndex==30) || (boardIndex==36) || (boardIndex==43)) = 4
 	| ((boardIndex ==5)|| (boardIndex==11)|| (boardIndex==18) || (boardIndex==24) || (boardIndex==31) || (boardIndex==37) || (boardIndex==44)) = 5
 	| ((boardIndex ==6)|| (boardIndex==12)|| (boardIndex==19) || (boardIndex==25) || (boardIndex==32) || (boardIndex==38) || (boardIndex==45)) = 6
 	| otherwise = -1
 
-main = putStrLn (show $ determineCntClockwiseArm 467)
+--checkClockwise::[Int]->[Int]->Int->Bool
+--checkClockwise
 
+
+--getArm::[[Int]]->Int->[Int]
+--getArm indexBoard curIndex
+
+<<<<<<< HEAD
 --checks to see if number can be placed inside the ring corresponding to the index
+=======
+
+--checks to see if a number can validly be placed on the arm
+checkArm::[[Int]] -> [Int] -> Int -> Int -> Int -> Bool
+checkArm armList sudokuBoard armIndex index checkVal
+	| (armIndex > 6) || (index > 6) = False
+  | (sudokuBoard!!((armList!!armIndex)!!index) == checkVal) = False
+	| (sudokuBoard!!((armList!!armIndex)!!index) /= checkVal) && (index < 6) = checkArm armList sudokuBoard armIndex (index+1) checkVal
+	| otherwise = True
+
+
+--main = putStrLn (show $ checkArm clockwiseArmList 0 0)
+
+>>>>>>> 2169303cf156211a68e2e67022151040e4b0882f
 checkCurRing::[Int] -> Int -> Int -> Bool
 checkCurRing board curIndex valueInserted
 	| (curIndex<7 && curIndex>(-1)) =
@@ -152,5 +189,9 @@ getRingNumList board valueList ringNumber numToCheck
   | otherwise = []
 
 
+<<<<<<< HEAD
 sudokuBoard=[x*0|x<-[0,1..48]]
 
+=======
+sudokuBoard=[x*1|x<-[0,1..48]]
+>>>>>>> 2169303cf156211a68e2e67022151040e4b0882f
