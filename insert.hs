@@ -82,9 +82,9 @@ checkCurRing board curIndex valueInserted
 
 	
 
-board=insertAt 3 sudokuBoard 3
+--board=insertAt 3 sudokuBoard 3
 
-main = putStrLn(show (checkCurRing board 4 3))
+--main = putStrLn(show (checkCurRing board 4 3))
 
 
 

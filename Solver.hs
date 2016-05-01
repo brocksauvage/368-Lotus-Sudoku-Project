@@ -4,7 +4,6 @@ import Data.List.Split
 
 testList = [1,2..49]::[Int]
 
-
 --returns a random number from inclusively from 1 to 7
 
 clockwiseArmList = [[]]
@@ -19,6 +18,7 @@ testBoard list
   | length list == 0 = ""
   | length list /= 0 = show (chunksOf 7 list)
 
+--determines which clockwise arm an index on the lotus board falls into
 determineClockwise::Int->Int
 determineClockwise boardIndex
   | (boardIndex == 0) || (boardIndex == 7) || (boardIndex == 15) || (boardIndex == 22) || (boardIndex == 30) || (boardIndex == 37) || (boardIndex == 45) = 0
@@ -45,8 +45,8 @@ checkArm arm index armIndex
 	| otherwise = checkArm arm index (armIndex+1)
 
 --determines which counter clockwise arm an index on the lotus board falls into
-determineCntClockwiseArm::Int -> Int
-determineCntClockwiseArm boardIndex
+determineCntClockwise::Int -> Int
+determineCntClockwise boardIndex
 	| ((boardIndex ==0)|| (boardIndex==13)|| (boardIndex==20) || (boardIndex==26) || (boardIndex==33) || (boardIndex==39) || (boardIndex==46)) = 0
 	| ((boardIndex ==1)|| (boardIndex==7) || (boardIndex==14) || (boardIndex==27) || (boardIndex==34) || (boardIndex==40) || (boardIndex==47)) = 1
 	| ((boardIndex ==2)|| (boardIndex==8) || (boardIndex==15) || (boardIndex==21) || (boardIndex==28) || (boardIndex==41) || (boardIndex==48)) = 2
@@ -58,7 +58,7 @@ determineCntClockwiseArm boardIndex
 
 main = putStrLn (show $ determineCntClockwiseArm 467)
 
-
+--checks to see if number can be placed inside the ring corresponding to the index
 checkCurRing::[Int] -> Int -> Int -> Bool
 checkCurRing board curIndex valueInserted
 	| (curIndex<7 && curIndex>(-1)) =
@@ -119,8 +119,8 @@ checkCurRing board curIndex valueInserted
 		&& (board!!48 /= valueInserted))
 
 
-
 --source=https://gist.github.com/umairsd/cdcb397941762fe02d05#file-list-index-ops-hs-L17
+--inserts a value at a given position in a list
 insertAt :: a -> [a] -> Int -> [a]
 insertAt x list indexInsertingAt = foldr insertHelper [] $ zip [0..] list
 	where
@@ -130,6 +130,7 @@ insertAt x list indexInsertingAt = foldr insertHelper [] $ zip [0..] list
 
 
 --source=https://gist.github.com/umairsd/cdcb397941762fe02d05#file-list-index-ops-hs-L17
+--deletes a value from the list at given index, decreases size of the list
 deleteAt :: [a] -> Int -> [a]
 deleteAt ys n = foldr deleteHelper [] $ zip [0..] ys
 	where
@@ -151,5 +152,5 @@ getRingNumList board valueList ringNumber numToCheck
   | otherwise = []
 
 
-sudokuBoard=[x*1|x<-[0,1..48]]
+sudokuBoard=[x*0|x<-[0,1..48]]
 
