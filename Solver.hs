@@ -53,14 +53,10 @@ solveRing board ringNum startIndex = do
 
 
 --main = putStrLn $ show (solveRing sudokuBoard 3 0)
-main = do
-	putStrLn $ show (determineRing 2)
-	putStrLn $ show (determineRing 9)
-	putStrLn $ show (determineRing 16)
-	putStrLn $ show (determineRing 23)
-	putStrLn $ show (determineRing 30)
-	putStrLn $ show (determineRing 37)
-	putStrLn $ show (determineRing 44)
+main = putStrLn ("Hello World!")
+
+list=[1,2,3,4]
+
 
 sudokuBoard= [5,0,0,0,1,6,0,0,0,0,3,0,0,0,7,0,6,2,1,0,0,0,1,7,0,0,6,0,0,5,0,3,6,7,2,0,0,2,1,0,0,4,0,0,4,0,0,1,0]
 
@@ -98,13 +94,6 @@ determineCntClockwise boardIndex
 	| ((boardIndex ==6)|| (boardIndex==12)|| (boardIndex==19) || (boardIndex==25) || (boardIndex==32) || (boardIndex==38) || (boardIndex==45)) = 6
 	| otherwise = -1
 
---checkClockwise::[Int]->[Int]->Int->Bool
---checkClockwise
-
-
---getArm::[[Int]]->Int->[Int]
---getArm indexBoard curIndex
-
 
 --checks to see if a number can validly be placed on the arm
 checkArm::[[Int]] -> [Int] -> Int -> Int -> Int -> Bool
@@ -113,6 +102,14 @@ checkArm armList sudokuBoard armIndex index checkVal
   | (sudokuBoard!!((armList!!armIndex)!!index) == checkVal) = False
 	| (sudokuBoard!!((armList!!armIndex)!!index) /= checkVal) && (index < 6) = checkArm armList sudokuBoard armIndex (index+1) checkVal
 	| otherwise = True
+
+--checks to see if the value passed in can validly be placed at the given index on the board
+checkPlacement:: [Int]->Int->Int->Bool
+checkPlacement board boardIndex valueInserting
+	| (checkCurRing board boardIndex valueInserting)
+		&&(checkArm clockwiseArmList board (determineClockwise boardIndex) boardIndex valueInserting)
+		&&(checkArm cntrclockwiseArmList board (determineCntClockwise boardIndex) boardIndex valueInserting) = True
+	| otherwise = False 
 
 
 --main = putStrLn (show $ checkArm clockwiseArmList 0 0)
