@@ -110,6 +110,8 @@ checkPlacement board boardIndex valueInserting
 		&&(checkArm clockwiseArmList board (determineClockwise boardIndex) boardIndex valueInserting)
 		&&(checkArm cntrclockwiseArmList board (determineCntClockwise boardIndex) boardIndex valueInserting) = True
 	| otherwise = False
+	| otherwise = False
+
 
 
 --main = putStrLn (show $ checkArm clockwiseArmList 0 0)
