@@ -51,7 +51,15 @@ solveRing board ringNum startIndex = do
 	missingRingNums
 
 
-main = putStrLn $ show (solveRing sudokuBoard 3 0)
+--main = putStrLn $ show (solveRing sudokuBoard 3 0)
+main = do
+	putStrLn $ show (determineRing 2)
+	putStrLn $ show (determineRing 9)
+	putStrLn $ show (determineRing 16)
+	putStrLn $ show (determineRing 23)
+	putStrLn $ show (determineRing 30)
+	putStrLn $ show (determineRing 37)
+	putStrLn $ show (determineRing 44)
 
 sudokuBoard= [5,0,0,0,1,6,0,0,0,0,3,0,0,0,7,0,6,2,1,0,0,0,1,7,0,0,6,0,0,5,0,3,6,7,2,0,0,2,1,0,0,4,0,0,4,0,0,1,0]
 
