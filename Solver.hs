@@ -204,16 +204,14 @@ getRingNumList board valueList ringNumber numToCheck
 --lotusSolver::[Int]->[Int]
 --lotusSolver sudokuBoard = solveBoard sudokuBoard 0
 
-fillRing::[Int]->[Int]->Int->[Int]
-fillRing board unusedNums index
-  | ((length unusedNums) /= 0) && (index < (length board)) = do
-                               insertNumber board (head unusedNums) index
-                               fillRing board (tail unusedNums) (index+1)
-  | otherwise = board
+fillBoard::[Int]->[Int]->Int->[Int]
+fillBoard board unusedNums index
+  | ((length unusedNums) /= 0) = insertNumber board (head unusedNums) index
+  | otherwise = [1]
 
 insertNumber::[Int]->Int->Int->[Int]
 insertNumber board myNum index
-  | (board !! index == 0) = insertAt myNum (deleteAt board index) index
+  | (board !! index == 0) = deleteAt (insertAt myNum board (index)) (index+1)
 
   | (board !! index /= 0) && (index < (length board)-1) = insertNumber board myNum (index+1)
   | otherwise = board
