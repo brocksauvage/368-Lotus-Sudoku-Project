@@ -30,6 +30,7 @@ cntrclockwiseArmList = [[0,13,20,26,33,39,46],
                         [5,11,18,24,31,37,44],
                         [6,12,19,25,32,38,45]]::[[Int]]
 
+
 ringList = [[0..6],
 	    [7..13],
 	    [14..20],
@@ -207,5 +208,22 @@ getRingNumList board valueList ringNumber numToCheck
   | numToCheck < 8 = (getMissingRingNums board valueList ringNumber numToCheck) ++ (getRingNumList board valueList ringNumber (numToCheck+1))
   | otherwise = []
 
---sudokuBoard=[x*0|x<-[0,1..48]]
 
+--lotusSolver::[Int]->[Int]
+--lotusSolver sudokuBoard = solveBoard sudokuBoard 0
+
+fillRing::[Int]->[Int]->Int->[Int]
+fillRing board unusedNums index
+  | ((length unusedNums) /= 0) && (index < (length board)) = do
+                               insertNumber board (head unusedNums) index
+                               fillRing board (tail unusedNums) (index+1)
+  | otherwise = board
+
+insertNumber::[Int]->Int->Int->[Int]
+insertNumber board myNum index
+  | (board !! index == 0) = insertAt myNum (deleteAt board index) index
+
+  | (board !! index /= 0) && (index < (length board)-1) = insertNumber board myNum (index+1)
+  | otherwise = board
+
+--sudokuBoard=[x*0|x<-[0,1..48]]
