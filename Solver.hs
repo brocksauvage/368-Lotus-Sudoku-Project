@@ -32,12 +32,12 @@ cntrclockwiseArmList = [[0,13,20,26,33,39,46],
 
 
 ringList = [[0..6],
-	    [7..13],
-	    [14..20],
-	    [21..27],
-	    [28..34],
-	    [35..41],
-	    [42..48]]::[[Int]]
+            [7..13],
+            [14..20],
+      	    [21..27],
+      	    [28..34],
+      	    [35..41],
+      	    [42..48]]::[[Int]]
 
 
 testBoard::[Int] -> String
@@ -53,7 +53,7 @@ solveRing board ringNum startIndex = do
 
 
 --main = putStrLn $ show (solveRing sudokuBoard 3 0)
-main = putStrLn ("Hello World!")
+  --main = putStrLn $ show (lotusSolver sudokuBoard)
 
 list=[1,2,3,4]
 
@@ -109,7 +109,6 @@ checkPlacement board boardIndex valueInserting
 	| (checkCurRing board boardIndex valueInserting)
 		&&(checkArm clockwiseArmList board (determineClockwise boardIndex) boardIndex valueInserting)
 		&&(checkArm cntrclockwiseArmList board (determineCntClockwise boardIndex) boardIndex valueInserting) = True
-	| otherwise = False
 	| otherwise = False
 
 
@@ -208,18 +207,22 @@ getRingNumList board valueList ringNumber numToCheck
   | otherwise = []
 
 
---lotusSolver::[Int]->[Int]
---lotusSolver sudokuBoard = solveBoard sudokuBoard 0
+lotusSolver::[Int]->[Int]
+lotusSolver sudokuBoard = fillBoard sudokuBoard 0
 
-fillBoard::[Int]->[Int]->Int->[Int]
-fillBoard board unusedNums index
-  | ((length unusedNums) /= 0) = insertNumber board (head unusedNums) index
-  | otherwise = [1]
+fillBoard::[Int]->Int->[Int]
+fillBoard board index
+  | (index < ((length board) - 1)) &&
+    ((length unusedNums) /= 0) &&
+    checkPlacement board index (head unusedNums) = fillBoard (insertNumber board (head unusedNums) index) (index+1)
+  | (index < ((length board) - 1)) && (length unusedNums) /= 0 = fillBoard (insertNumber board (head (tail unusedNums)) index) (index+1)
+  | otherwise = []
+  where unusedNums = getRingNumList board [] index 0
+
 
 insertNumber::[Int]->Int->Int->[Int]
 insertNumber board myNum index
   | (board !! index == 0) = deleteAt (insertAt myNum board (index)) (index+1)
-
   | (board !! index /= 0) && (index < (length board)-1) = insertNumber board myNum (index+1)
   | otherwise = board
 
