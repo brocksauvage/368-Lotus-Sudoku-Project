@@ -53,7 +53,7 @@ solveRing board ringNum startIndex = do
 
 
 --main = putStrLn $ show (solveRing sudokuBoard 3 0)
-main = putStrLn ("Hello World!")
+--main = putStrLn ("Hello World!")
 
 list=[1,2,3,4]
 
@@ -110,9 +110,15 @@ checkPlacement board boardIndex valueInserting
 		&&(checkArm clockwiseArmList board (determineClockwise boardIndex) boardIndex valueInserting)
 		&&(checkArm cntrclockwiseArmList board (determineCntClockwise boardIndex) boardIndex valueInserting) = True
 	| otherwise = False
+
+
+checkBoard:: [Int]-> Int -> Bool
+checkBoard board startingIndex
+	| startingIndex > 48 = True
+ 	| checkPlacement board startingIndex (board!!startingIndex)= checkPlacement board (startingIndex+1) (board!!startingIndex+1)
 	| otherwise = False
 
-
+main = putStrLn (show $ checkBoard sudokuBoard 0)
 
 --main = putStrLn (show $ checkArm clockwiseArmList 0 0)
 checkCurRing::[Int] -> Int -> Int -> Bool
@@ -184,7 +190,6 @@ insertAt x list indexInsertingAt = foldr insertHelper [] $ zip [0..] list
 			then x : y : acc
 			else y : acc
 
-
 --source=https://gist.github.com/umairsd/cdcb397941762fe02d05#file-list-index-ops-hs-L17
 --deletes a value from the list at given index, decreases size of the list
 deleteAt :: [a] -> Int -> [a]
@@ -207,9 +212,6 @@ getRingNumList board valueList ringNumber numToCheck
   | numToCheck < 8 = (getMissingRingNums board valueList ringNumber numToCheck) ++ (getRingNumList board valueList ringNumber (numToCheck+1))
   | otherwise = []
 
-
---lotusSolver::[Int]->[Int]
---lotusSolver sudokuBoard = solveBoard sudokuBoard 0
 
 fillBoard::[Int]->[Int]->Int->[Int]
 fillBoard board unusedNums index
