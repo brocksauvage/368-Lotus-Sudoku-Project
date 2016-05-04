@@ -39,6 +39,9 @@ ringList = [[0..6],
       	    [35..41],
       	    [42..48]]::[[Int]]
 
+testArmCheck::String
+  | copyCheckArm ringList sudokuBoard
+
 
 testBoard::[Int] -> String
 testBoard list
@@ -52,12 +55,8 @@ solveRing board ringNum startIndex = do
 	missingRingNums
 
 
---main = putStrLn $ show (solveRing sudokuBoard 3 0)
-<<<<<<< HEAD
---main = putStrLn ("Hello World!")
-=======
+main = putStrLn (show $ lotusSolver sudokuBoard)
   --main = putStrLn $ show (lotusSolver sudokuBoard)
->>>>>>> 2c79d61cc19f6e00b37374e5fc20238a38d4b607
 
 list=[1,2,3,4]
 
@@ -73,7 +72,6 @@ determineRing boardIndex
 	| ((boardIndex >= 28)&&(boardIndex < 35)) = 4
 	| ((boardIndex >= 35)&&(boardIndex < 42)) = 5
 	| ((boardIndex >= 42)&&(boardIndex < 49)) = 6
-	| otherwise = (-1)
 
 
 --determines which clockwise arm an index on the lotus board falls into
@@ -93,36 +91,52 @@ determineCntClockwise boardIndex
  	| ((boardIndex ==0)|| (boardIndex==13)|| (boardIndex==20) || (boardIndex==26) || (boardIndex==33) || (boardIndex==39) || (boardIndex==46)) = 0
  	| ((boardIndex ==1)|| (boardIndex==7) || (boardIndex==14) || (boardIndex==27) || (boardIndex==34) || (boardIndex==40) || (boardIndex==47)) = 1
 	| ((boardIndex ==2)|| (boardIndex==8) || (boardIndex==15) || (boardIndex==21) || (boardIndex==28) || (boardIndex==41) || (boardIndex==48)) = 2
+  | ((boardIndex ==3)|| (boardIndex==9) || (boardIndex==16) || (boardIndex==22) || (boardIndex==29) || (boardIndex==35) || (boardIndex==42)) = 3
 	| ((boardIndex ==4)|| (boardIndex==10)|| (boardIndex==17) || (boardIndex==23) || (boardIndex==30) || (boardIndex==36) || (boardIndex==43)) = 4
 	| ((boardIndex ==5)|| (boardIndex==11)|| (boardIndex==18) || (boardIndex==24) || (boardIndex==31) || (boardIndex==37) || (boardIndex==44)) = 5
 	| ((boardIndex ==6)|| (boardIndex==12)|| (boardIndex==19) || (boardIndex==25) || (boardIndex==32) || (boardIndex==38) || (boardIndex==45)) = 6
-	| otherwise = -1
 
 
 --checks to see if a number can validly be placed on the arm
 checkArm::[[Int]] -> [Int] -> Int -> Int -> Int -> Bool
-checkArm armList sudokuBoard armIndex index checkVal
-	| (armIndex > 6) || (index > 6) = False
-  | (sudokuBoard!!((armList!!armIndex)!!index) == checkVal) = False
-	| (sudokuBoard!!((armList!!armIndex)!!index) /= checkVal) && (index < 6) = checkArm armList sudokuBoard armIndex (index+1) checkVal
+checkArm armList sudokuBoard armIndex inArm checkVal
+	| (armIndex > 6) = False
+  | inArm > 6 = True
+  | (sudokuBoard!!((armList!!armIndex)!!inArm) == checkVal) = False
+	| (sudokuBoard!!((armList!!armIndex)!!inArm) /= checkVal) = checkArm armList sudokuBoard armIndex (inArm+1) checkVal
 	| otherwise = True
 
+copyCheckArm::[[Int]] -> [Int] -> Int -> Int -> Int -> Bool
+copyCheckArm armList sudokuBoard armIndex inArm index
+  | (armIndex > 6) = False
+  | inArm > 6 = True
+  | (armList!!armIndex)!!inArm == index = copyCheckArm armList sudokuBoard armIndex (inArm+1) index
+  | (sudokuBoard!!((armList!!armIndex)!!inArm)) == sudokuBoard!!index = False
+  | (sudokuBoard!!((armList!!armIndex)!!inArm)) /= (sudokuBoard!!index) = copyCheckArm armList sudokuBoard armIndex (inArm+1) index
+  | otherwise = True
+
 --checks to see if the value passed in can validly be placed at the given index on the board
-checkPlacement:: [Int]->Int->Int->Bool
-checkPlacement board boardIndex valueInserting
-	| (checkCurRing board boardIndex valueInserting)
-		&&(checkArm clockwiseArmList board (determineClockwise boardIndex) boardIndex valueInserting)
-		&&(checkArm cntrclockwiseArmList board (determineCntClockwise boardIndex) boardIndex valueInserting) = True
+checkPlacement:: [Int]->Int->Bool
+checkPlacement board boardIndex
+	| (copyCheckRing ringList board (determineRing boardIndex) 0 boardIndex)
+		&& (copyCheckArm clockwiseArmList board (determineClockwise boardIndex) 0 boardIndex)
+		&& (copyCheckArm cntrclockwiseArmList board (determineCntClockwise boardIndex) 0 boardIndex) = True
 	| otherwise = False
 
+checkBoard::[Int]->Int->Bool
+checkBoard board index
+  | index == 49 = True
+  | checkPlacement board index = checkBoard board (index+1)
+  | otherwise = False
 
-checkBoard:: [Int]-> Int -> Bool
-checkBoard board startingIndex
-	| startingIndex > 48 = True
- 	| checkPlacement board startingIndex (board!!startingIndex)= checkPlacement board (startingIndex+1) (board!!startingIndex+1)
-	| otherwise = False
-
-main = putStrLn (show $ checkBoard sudokuBoard 0)
+copyCheckRing::[[Int]] -> [Int] -> Int -> Int -> Int -> Bool
+copyCheckRing ringList sudokuBoard ringIndex inRing index
+  | (ringIndex > 6) = False
+  | inRing > 6 = True
+  | (((ringList!!ringIndex)!!inRing) == index) = copyCheckRing ringList sudokuBoard ringIndex (inRing+1) index
+  | (sudokuBoard!!((ringList!!ringIndex)!!inRing)) == sudokuBoard!!index = False
+  | (sudokuBoard!!((ringList!!ringIndex)!!inRing)) /= (sudokuBoard!!index) = copyCheckRing ringList sudokuBoard ringIndex (inRing+1) index
+  | otherwise = True
 
 --main = putStrLn (show $ checkArm clockwiseArmList 0 0)
 checkCurRing::[Int] -> Int -> Int -> Bool
@@ -185,6 +199,7 @@ checkCurRing board curIndex valueInserted
 		&& (board!!48 /= valueInserted))
 
 
+
 --source=https://gist.github.com/umairsd/cdcb397941762fe02d05#file-list-index-ops-hs-L17
 --inserts a value at a given position in a list
 insertAt :: a -> [a] -> Int -> [a]
@@ -193,6 +208,7 @@ insertAt x list indexInsertingAt = foldr insertHelper [] $ zip [0..] list
 		insertHelper (i,y) acc = if i == indexInsertingAt
 			then x : y : acc
 			else y : acc
+
 
 --source=https://gist.github.com/umairsd/cdcb397941762fe02d05#file-list-index-ops-hs-L17
 --deletes a value from the list at given index, decreases size of the list
@@ -217,30 +233,44 @@ getRingNumList board valueList ringNumber numToCheck
   | otherwise = []
 
 
-<<<<<<< HEAD
-fillBoard::[Int]->[Int]->Int->[Int]
-fillBoard board unusedNums index
-  | ((length unusedNums) /= 0) = insertNumber board (head unusedNums) index
-  | otherwise = [1]
-=======
 lotusSolver::[Int]->[Int]
-lotusSolver sudokuBoard = fillBoard sudokuBoard 0
+lotusSolver sudokuBoard = fillBoard sudokuBoard 0 1
 
-fillBoard::[Int]->Int->[Int]
-fillBoard board index
-  | (index < ((length board) - 1)) &&
-    ((length unusedNums) /= 0) &&
-    checkPlacement board index (head unusedNums) = fillBoard (insertNumber board (head unusedNums) index) (index+1)
-  | (index < ((length board) - 1)) && (length unusedNums) /= 0 = fillBoard (insertNumber board (head (tail unusedNums)) index) (index+1)
+fillBoard::[Int]->Int->Int->[Int]
+fillBoard board index n
+  | index == 1 = board
+  | (board!!index /= 0) = fillBoard board (index+1) 1
+  | (n==1) && (checkPlacement a1 index) = a1
+  | (n==2) && (checkPlacement a2 index) = a2
+  | (n==3) && (checkPlacement a3 index) = a3
+  | (n==4) && (checkPlacement a4 index) = a4
+  | (n==5) && (checkPlacement a5 index) = a5
+  | (n==6) && (checkPlacement a6 index) = a6
+  | (n==7) && (checkPlacement a7 index) = a7
   | otherwise = []
-  where unusedNums = getRingNumList board [] index 0
+  where
+    a1 = fillBoard (insertNumber board 1 index) (index+1) 1
+    a2 = fillBoard (insertNumber board 2 index) (index+1) 1
+    a3 = fillBoard (insertNumber board 3 index) (index+1) 1
+    a4 = fillBoard (insertNumber board 4 index) (index+1) 1
+    a5 = fillBoard (insertNumber board 5 index) (index+1) 1
+    a6 = fillBoard (insertNumber board 6 index) (index+1) 1
+    a7 = fillBoard (insertNumber board 7 index) (index+1) 1
 
->>>>>>> 2c79d61cc19f6e00b37374e5fc20238a38d4b607
+
+-- | (checkPlacement board index n) == False = fillBoard board index (n+1)
+-- | (n==7) && (checkPlacement board index n) == False = []
+
+
+tryNewNum::[Int]->Int->Int->[Int]
+tryNewNum board myNum index
+  | ((checkPlacement board index) == False) || board!!index == myNum = tryNewNum board (myNum+1) index
+  | (checkPlacement board index) = deleteAt (insertAt myNum board (index)) (index+1)
+  | otherwise = board
+
 
 insertNumber::[Int]->Int->Int->[Int]
-insertNumber board myNum index
-  | (board !! index == 0) = deleteAt (insertAt myNum board (index)) (index+1)
-  | (board !! index /= 0) && (index < (length board)-1) = insertNumber board myNum (index+1)
-  | otherwise = board
+insertNumber board myNum index = deleteAt (insertAt myNum board (index)) (index+1)
+
 
 --sudokuBoard=[x*0|x<-[0,1..48]]
